@@ -26,7 +26,7 @@ public class AuditLogController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AuditLogDto> update(@PathVariable Long id, @Valid @RequestBody AuditLogDto auditLogDto){
+    public ResponseEntity<AuditLogDto> update(@PathVariable("id") Long id, @Valid @RequestBody AuditLogDto auditLogDto){
         AuditLogDto updated = auditLogService.update(id, auditLogDto);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
@@ -38,13 +38,13 @@ public class AuditLogController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AuditLogDto> findById(@PathVariable Long id){
+    public ResponseEntity<AuditLogDto> findById(@PathVariable("id") Long id){
         AuditLogDto auditLogDto = auditLogService.findById(id);
         return new ResponseEntity<>(auditLogDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable Long id){
+    public ResponseEntity<Boolean> delete(@PathVariable("id") Long id){
         Boolean isDeleted = auditLogService.deleteById(id);
         return new ResponseEntity<>(isDeleted, HttpStatus.OK);
     }

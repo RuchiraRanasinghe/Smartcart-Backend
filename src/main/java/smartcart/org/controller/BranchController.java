@@ -25,7 +25,7 @@ public class BranchController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BranchDto> getById(@PathVariable Long id) {
+    public ResponseEntity<BranchDto> getById(@PathVariable("id") Long id) {
         BranchDto branch = branchService.getBranchById(id);
         return ResponseEntity.ok(branch);
     }
@@ -37,13 +37,13 @@ public class BranchController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BranchDto> update(@PathVariable Long id, @RequestBody BranchDto branchDto) {
+    public ResponseEntity<BranchDto> update(@PathVariable("id") Long id, @RequestBody BranchDto branchDto) {
         BranchDto updatedBranch = branchService.updateBranch(id, branchDto);
         return ResponseEntity.ok(updatedBranch);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         Boolean deleted = branchService.deleteBranch(id);
         if (Boolean.TRUE.equals(deleted)) {
             return ResponseEntity.noContent().build();
