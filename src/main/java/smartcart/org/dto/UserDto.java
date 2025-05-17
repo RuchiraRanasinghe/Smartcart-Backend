@@ -1,14 +1,14 @@
 package smartcart.org.dto;
 
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import smartcart.org.util.UserRole;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class UserDto {
 
     private Long id;
@@ -34,5 +34,5 @@ public class UserDto {
     @NotNull(message = "User role must be provided")
     private UserRole role;
 
-    private boolean active;
+    private Boolean active;
 }
