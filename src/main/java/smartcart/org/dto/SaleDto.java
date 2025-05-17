@@ -2,15 +2,17 @@ package smartcart.org.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import smartcart.org.entity.Customer;
 import smartcart.org.entity.User;
 import smartcart.org.util.PaymentType;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class SaleDto {
