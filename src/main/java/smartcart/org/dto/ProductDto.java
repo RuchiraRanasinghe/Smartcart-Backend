@@ -37,6 +37,6 @@ public class ProductDto {
     @PastOrPresent(message = "Expiry date cannot be in the future")
     private Date expiryDate;
 
-    @NotNull(message = "Supplier is required")
-    private Supplier supplier;
+    @NotNull(message = "Supplier Id is required")
+    private Long supplierId;
 }
