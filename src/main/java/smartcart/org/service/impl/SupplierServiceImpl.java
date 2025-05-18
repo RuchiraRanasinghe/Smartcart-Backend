@@ -10,7 +10,6 @@ import smartcart.org.repository.SupplierRepository;
 import smartcart.org.service.SupplierService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +36,7 @@ public class SupplierServiceImpl implements SupplierService {
         return supplierRepository.findAll()
                 .stream()
                 .map(s -> modelMapper.map(s, SupplierDto.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

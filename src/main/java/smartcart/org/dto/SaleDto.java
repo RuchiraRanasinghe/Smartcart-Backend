@@ -24,10 +24,10 @@ public class SaleDto {
     private LocalDateTime saleTime;
 
     @NotNull(message = "Cashier is required")
-    private User cashier;
+    private Long cashierId;
 
     @NotNull(message = "Customer is required")
-    private Customer customer;
+    private Long customerId;
 
     @PositiveOrZero(message = "Total amount must be zero or positive")
     private double totalAmount;
