@@ -1,10 +1,17 @@
 package smartcart.org.service;
 
+import smartcart.org.dto.LoginRequestDto;
+import smartcart.org.dto.LoginResponseDto;
+import smartcart.org.dto.RegisterRequestDto;
 import smartcart.org.dto.UserDto;
+
 import java.util.List;
 
 public interface UserService {
-    UserDto create(UserDto userDto);
+
+    UserDto create(RegisterRequestDto registerDto);
+
+    LoginResponseDto login(LoginRequestDto loginDto);
 
     UserDto findById(Long id);
 
