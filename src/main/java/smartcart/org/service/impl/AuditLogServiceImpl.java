@@ -10,7 +10,7 @@ import smartcart.org.entity.User;
 import smartcart.org.exception.ResourceNotFoundException;
 import smartcart.org.repository.AuditLogRepository;
 import smartcart.org.service.AuditLogService;
-import smartcart.org.service.UserService;
+import smartcart.org.service.AuthService;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class AuditLogServiceImpl implements AuditLogService {
 
     private final AuditLogRepository auditLogRepository;
     private final ModelMapper modelMapper;
-    private final UserService userService;
+    private final AuthService authService;
 
     String userNotFoundMessage = "User not found with id: ";
 
@@ -43,7 +43,7 @@ public class AuditLogServiceImpl implements AuditLogService {
     }
 
     private AuditLogDto saveOrUpdateAuditLog(AuditLogDto auditLogDto) {
-        UserDto userById = userService.findById(auditLogDto.getUserId());
+        UserDto userById = authService.findById(auditLogDto.getUserId());
         if (userById == null) {
             throw new ResourceNotFoundException(userNotFoundMessage + auditLogDto.getUserId());
         }

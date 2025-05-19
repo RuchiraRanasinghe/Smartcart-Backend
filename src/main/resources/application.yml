@@ -6,14 +6,23 @@ spring:
     url: jdbc:mysql://localhost:3306/smart_cart_db?createDatabaseIfNotExist=true
     username: root
     password: 1234
-
   jpa:
     hibernate:
       ddl-auto: update
-
   output:
     ansi:
       enabled: always
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: reg.clothify@gmail.com
+    password: wyds qhbr aiqx moja
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 jwt:
   secret: your-very-secure-jwt-secret-key-32-chars-long
@@ -28,3 +37,9 @@ springdoc:
     display-request-duration: true
     persist-authorization: true
     try-it-out-enabled: true
+    url: /api-docs
+
+#logging:
+#  level:
+#    org.springframework: DEBUG
+#    org.springdoc: DEBUG

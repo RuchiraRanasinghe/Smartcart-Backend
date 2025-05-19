@@ -11,7 +11,7 @@ import smartcart.org.exception.ResourceNotFoundException;
 import smartcart.org.repository.SaleRepository;
 import smartcart.org.service.CustomerService;
 import smartcart.org.service.SaleService;
-import smartcart.org.service.UserService;
+import smartcart.org.service.AuthService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,14 +23,14 @@ public class SaleServiceImpl implements SaleService {
     private final SaleRepository saleRepository;
     private final ModelMapper modelMapper;
 
-    private final UserService userService;
+    private final AuthService authService;
     private final CustomerService customerService;
 
     String saleNotFoundWithIdMessage = "Sale not found with id: ";
 
     @Override
     public SaleDto createSale(SaleDto saleDto) {
-        User cashier = modelMapper.map(userService.findById(saleDto.getCashierId()), User.class);
+        User cashier = modelMapper.map(authService.findById(saleDto.getCashierId()), User.class);
         Customer customer = modelMapper.map(customerService.getCustomerById(saleDto.getCustomerId()), Customer.class);
 
         Sale mappedSale = modelMapper.map(saleDto, Sale.class);
@@ -59,7 +59,7 @@ public class SaleServiceImpl implements SaleService {
         Sale existingSale = saleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(saleNotFoundWithIdMessage + id));
 
-        User cashier = modelMapper.map(userService.findById(saleDto.getCashierId()), User.class);
+        User cashier = modelMapper.map(authService.findById(saleDto.getCashierId()), User.class);
         Customer customer = modelMapper.map(customerService.getCustomerById(saleDto.getCustomerId()), Customer.class);
 
         modelMapper.map(saleDto, existingSale);
