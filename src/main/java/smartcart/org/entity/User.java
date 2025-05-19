@@ -1,14 +1,13 @@
 package smartcart.org.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import smartcart.org.util.UserRole;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -33,5 +32,5 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    private boolean active;
+    private Boolean active = true;
 }

@@ -1,31 +1,25 @@
-package smartcart.org.entity;
+package smartcart.org.dto;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "customers")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class Customer {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@NoArgsConstructor
+public class CustomerDto {
     private Long id;
 
-    @Column(nullable = false)
-    @NotBlank
+    @NotBlank(message = "Customer name is required")
     private String name;
 
-    @Column(nullable = false, unique = true)
-    @Pattern(regexp = "\\d{10}")
+    @NotNull(message = "Phone number is required")
+    @Pattern(regexp = "\\d{10}", message = "Phone number must be exactly 10 digits")
     private String phoneNumber;
 
     private int loyaltyPoints;
