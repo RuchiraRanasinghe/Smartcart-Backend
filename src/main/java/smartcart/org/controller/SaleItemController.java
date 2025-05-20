@@ -1,6 +1,8 @@
 package smartcart.org.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 import smartcart.org.dto.SaleItemDto;
 import smartcart.org.service.SaleItemService;
@@ -15,27 +17,34 @@ public class SaleItemController {
     private final SaleItemService saleItemService;
 
     @PostMapping
-    public SaleItemDto createSaleItem(@RequestBody SaleItemDto saleItemDto) {
-        return saleItemService.createSaleItem(saleItemDto);
+    public ResponseEntity<SaleItemDto> createSaleItem(@NonNull @RequestBody SaleItemDto saleItemDto) {
+        SaleItemDto createdSaleItem = saleItemService.createSaleItem(saleItemDto);
+        return ResponseEntity.status(201).body(createdSaleItem);
     }
 
     @GetMapping("/{id}")
-    public SaleItemDto getSaleItemById(@PathVariable("id") Long id) {
-        return saleItemService.findSaleItemById(id);
+    public ResponseEntity<SaleItemDto> getSaleItemById(@NonNull @PathVariable("id") Long id) {
+        SaleItemDto saleItem = saleItemService.findSaleItemById(id);
+        return ResponseEntity.ok(saleItem);
     }
 
     @GetMapping
-    public List<SaleItemDto> getAllSaleItems() {
-        return saleItemService.findAllSaleItems();
+    public ResponseEntity<List<SaleItemDto>> getAllSaleItems() {
+        List<SaleItemDto> saleItems = saleItemService.findAllSaleItems();
+        return ResponseEntity.ok(saleItems);
     }
 
     @PutMapping("/{id}")
-    public SaleItemDto updateSaleItem(@PathVariable("id") Long id, @RequestBody SaleItemDto saleItemDto) {
-        return saleItemService.updateSaleItem(id, saleItemDto);
+    public ResponseEntity<SaleItemDto> updateSaleItem(@NonNull @PathVariable("id") Long id, @NonNull @RequestBody SaleItemDto saleItemDto) {
+        SaleItemDto updatedSaleItem = saleItemService.updateSaleItem(id, saleItemDto);
+        return ResponseEntity.ok(updatedSaleItem);
     }
 
     @DeleteMapping("/{id}")
-    public boolean deleteSaleItemById(@PathVariable("id") Long id) {
-        return saleItemService.deleteSaleItemById(id);
+    public ResponseEntity<String> deleteSaleItemById(@NonNull @PathVariable("id") Long id) {
+        if (saleItemService.deleteSaleItemById(id)){
+            return ResponseEntity.status(201).body("Sale item deleted Successfully");
+        }
+        return ResponseEntity.status(404).body("Sale item not found.");
     }
 }

@@ -43,12 +43,12 @@ public class BranchController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<String> delete(@PathVariable("id") Long id) {
         Boolean deleted = branchService.deleteBranch(id);
         if (Boolean.TRUE.equals(deleted)) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.status(201).body("Branch deleted successfully");
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body("Branch not found");
         }
     }
 }

@@ -14,5 +14,5 @@ public interface DiscountService {
 
     DiscountDto updateDiscount(Long id, DiscountDto discountDto);
 
-    boolean deleteDiscount(Long id);
+    Boolean deleteDiscount(Long id);
 }

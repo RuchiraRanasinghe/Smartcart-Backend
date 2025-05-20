@@ -14,5 +14,5 @@ public interface SaleItemService {
 
     SaleItemDto updateSaleItem(Long id, SaleItemDto saleItemDto);
 
-    boolean deleteSaleItemById(Long id);
+    Boolean deleteSaleItemById(Long id);
 }

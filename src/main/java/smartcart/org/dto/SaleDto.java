@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import smartcart.org.entity.Customer;
-import smartcart.org.entity.User;
 import smartcart.org.util.PaymentType;
 
 import java.time.LocalDateTime;
@@ -36,7 +34,7 @@ public class SaleDto {
     private double discount;
 
     @PositiveOrZero(message = "Paid amount must be zero or positive")
-    @DecimalMin(value = "0.0", inclusive = true)
+    @DecimalMin(value = "0.0")
     private double paidAmount;
 
     @NotNull(message = "Payment type is required")

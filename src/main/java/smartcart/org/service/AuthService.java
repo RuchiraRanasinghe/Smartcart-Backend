@@ -20,6 +20,6 @@ public interface AuthService {
 
     UserDto update(Long id, UserDto userDto);
 
-    boolean deleteById(Long id);
+    Boolean deleteById(Long id);
 
 }

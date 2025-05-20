@@ -38,8 +38,3 @@ springdoc:
     persist-authorization: true
     try-it-out-enabled: true
     url: /api-docs
-
-#logging:
-#  level:
-#    org.springframework: DEBUG
-#    org.springdoc: DEBUG

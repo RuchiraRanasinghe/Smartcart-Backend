@@ -14,7 +14,6 @@ import smartcart.org.service.SaleService;
 import smartcart.org.service.AuthService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -51,7 +50,7 @@ public class SaleServiceImpl implements SaleService {
     public List<SaleDto> findAllSales() {
         return saleRepository.findAll().stream()
                 .map(sale -> modelMapper.map(sale, SaleDto.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -71,7 +70,7 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public boolean deleteSale(Long id) {
+    public Boolean deleteSale(Long id) {
         Sale sale = saleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(saleNotFoundWithIdMessage + id));
         saleRepository.delete(sale);

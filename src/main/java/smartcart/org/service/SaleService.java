@@ -14,5 +14,5 @@ public interface SaleService {
 
     SaleDto updateSale(Long id, SaleDto saleDto);
 
-    boolean deleteSale(Long id);
+    Boolean deleteSale(Long id);
 }
