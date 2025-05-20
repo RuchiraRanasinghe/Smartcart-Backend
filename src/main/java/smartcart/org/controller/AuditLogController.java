@@ -44,8 +44,10 @@ public class AuditLogController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable("id") Long id){
-        Boolean isDeleted = auditLogService.deleteById(id);
-        return new ResponseEntity<>(isDeleted, HttpStatus.OK);
+    public ResponseEntity<String> delete(@PathVariable("id") Long id){
+        if (Boolean.TRUE.equals(auditLogService.deleteById(id))) {
+            return ResponseEntity.status(201).body("Deleted successfully");
+        }
+        return ResponseEntity.status(404).body("Deletion failed");
     }
 }

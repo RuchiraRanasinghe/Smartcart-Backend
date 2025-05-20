@@ -36,7 +36,10 @@ public class DiscountController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteDiscount(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(discountService.deleteDiscount(id));
+    public ResponseEntity<String> deleteDiscount(@PathVariable("id") Long id) {
+        if (Boolean.TRUE.equals(discountService.deleteDiscount(id))) {
+            return ResponseEntity.status(201).body("Discount deleted successfully");
+        }
+        return ResponseEntity.status(404).body("Discount not found");
     }
 }

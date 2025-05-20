@@ -18,6 +18,8 @@ public class SupplierServiceImpl implements SupplierService {
     private final SupplierRepository supplierRepository;
     private final ModelMapper modelMapper;
 
+    String supplierNotFoundWithIdMessage = "Supplier not found with id: ";
+
     @Override
     public SupplierDto createSupplier(SupplierDto supplierDto) {
         Supplier supplier = modelMapper.map(supplierDto, Supplier.class);
@@ -27,7 +29,7 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public SupplierDto getSupplierById(Long id) {
         Supplier supplier = supplierRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(supplierNotFoundWithIdMessage + id));
         return modelMapper.map(supplier, SupplierDto.class);
     }
 
@@ -42,7 +44,7 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public SupplierDto updateSupplier(Long id, SupplierDto supplierDto) {
         Supplier existing = supplierRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(supplierNotFoundWithIdMessage + id));
 
         modelMapper.map(supplierDto, existing);
         return modelMapper.map(supplierRepository.save(existing), SupplierDto.class);
@@ -51,7 +53,7 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public Boolean deleteSupplier(Long id) {
         Supplier existing = supplierRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(supplierNotFoundWithIdMessage + id));
         supplierRepository.delete(existing);
         return true;
     }

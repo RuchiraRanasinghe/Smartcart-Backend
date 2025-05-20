@@ -21,6 +21,7 @@ import smartcart.org.entity.User;
 import smartcart.org.exception.InvalidTokenException;
 import smartcart.org.exception.ResourceNotFoundException;
 import smartcart.org.exception.UserAlreadyExistsException;
+import smartcart.org.exception.EmailSendingException;
 import smartcart.org.repository.PasswordResetTokenRepository;
 import smartcart.org.repository.UserRepository;
 import smartcart.org.security.JwtTokenProvider;
@@ -49,6 +50,7 @@ public class AuthServiceImpl implements AuthService {
     private static final String EMAIL_EXISTS_MESSAGE = "Email already exists: ";
     private static final int OTP_LENGTH = 6;
     private static final long OTP_EXPIRY_MINUTES = 10;
+    private static final Random RANDOM = new Random();
 
     @Override
     public UserDto create(RegisterRequestDto registerDto) {
@@ -140,7 +142,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public boolean deleteById(Long id) {
+    public Boolean deleteById(Long id) {
         if (!userRepository.existsById(id)) {
             throw new ResourceNotFoundException(USER_NOT_FOUND_MESSAGE + id);
         }
@@ -149,10 +151,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private String generateOtp() {
-        Random random = new Random();
         StringBuilder otp = new StringBuilder();
         for (int i = 0; i < OTP_LENGTH; i++) {
-            otp.append(random.nextInt(10));
+            otp.append(RANDOM.nextInt(10));
         }
         return otp.toString();
     }
@@ -166,7 +167,7 @@ public class AuthServiceImpl implements AuthService {
             helper.setText("Your OTP for password reset is: <b>" + otp + "</b><br>This OTP is valid for " + OTP_EXPIRY_MINUTES + " minutes.", true);
             mailSender.send(message);
         } catch (MessagingException e) {
-            throw new RuntimeException("Failed to send OTP email", e);
+            throw new EmailSendingException("Failed to send OTP email", e);
         }
     }
 }

@@ -39,7 +39,9 @@ public class InventoryLogController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") Long id) {
-        inventoryLogService.deleteLog(id);
-        return ResponseEntity.ok("Inventory log deleted successfully.");
+        if (Boolean.TRUE.equals(inventoryLogService.deleteLog(id))) {
+            return ResponseEntity.status(201).body("Inventory log deleted successfully");
+        }
+        return ResponseEntity.status(400).body("Inventory log not found.");
     }
 }
