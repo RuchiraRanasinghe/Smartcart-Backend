@@ -2,6 +2,8 @@ package smartcart.org.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 import smartcart.org.dto.SaleDto;
 import smartcart.org.service.SaleService;
@@ -16,27 +18,34 @@ public class SaleController {
     private final SaleService saleService;
 
     @PostMapping
-    public SaleDto persist(@RequestBody SaleDto saleDto) {
-        return saleService.createSale(saleDto);
+    public ResponseEntity<SaleDto> persist(@NonNull @Valid @RequestBody SaleDto saleDto) {
+        SaleDto createdSale = saleService.createSale(saleDto);
+        return ResponseEntity.status(201).body(createdSale);
     }
 
     @GetMapping("/{id}")
-    public SaleDto get(@PathVariable("id") Long id){
-        return saleService.findSale(id);
+    public ResponseEntity<SaleDto> get(@NonNull @PathVariable("id") Long id) {
+        SaleDto sale = saleService.findSale(id);
+        return ResponseEntity.ok(sale);
     }
 
     @GetMapping
-    public List<SaleDto> getAll(){
-        return saleService.findAllSales();
+    public ResponseEntity<List<SaleDto>> getAll() {
+        List<SaleDto> sales = saleService.findAllSales();
+        return ResponseEntity.ok(sales);
     }
 
     @PutMapping("/{id}")
-    public SaleDto update(@PathVariable("id") Long id, @Valid @RequestBody SaleDto saleDto){
-        return saleService.updateSale(id, saleDto);
+    public ResponseEntity<SaleDto> update(@NonNull @PathVariable("id") Long id, @NonNull @Valid @RequestBody SaleDto saleDto) {
+        SaleDto updatedSale = saleService.updateSale(id, saleDto);
+        return ResponseEntity.ok(updatedSale);
     }
 
     @DeleteMapping("/{id}")
-    public boolean delete(@PathVariable("id") Long id){
-        return saleService.deleteSale(id);
+    public ResponseEntity<String> delete(@NonNull @PathVariable("id") Long id) {
+        if (saleService.deleteSale(id)) {
+            return ResponseEntity.status(201).body("Sale deleted Successfully");
+        }
+        return ResponseEntity.status(404).body("Sale not found.");
     }
 }

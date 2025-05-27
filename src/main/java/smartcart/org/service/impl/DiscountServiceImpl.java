@@ -51,7 +51,7 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public boolean deleteDiscount(Long id) {
+    public Boolean deleteDiscount(Long id) {
         Discount existing = discountRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(discountNotFoundWithIdMessage + id));
         discountRepository.delete(existing);

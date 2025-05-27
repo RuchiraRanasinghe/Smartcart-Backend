@@ -1,17 +1,18 @@
 package smartcart.org.service;
 
-import smartcart.org.dto.LoginRequestDto;
-import smartcart.org.dto.LoginResponseDto;
-import smartcart.org.dto.RegisterRequestDto;
-import smartcart.org.dto.UserDto;
+import smartcart.org.dto.*;
 
 import java.util.List;
 
-public interface UserService {
+public interface AuthService {
 
     UserDto create(RegisterRequestDto registerDto);
 
     LoginResponseDto login(LoginRequestDto loginDto);
+
+    void forgotPassword(ForgotPasswordRequestDto forgotPasswordRequestDto);
+
+    void resetPassword(ResetPasswordRequestDto resetPasswordRequestDto);
 
     UserDto findById(Long id);
 
@@ -19,5 +20,6 @@ public interface UserService {
 
     UserDto update(Long id, UserDto userDto);
 
-    boolean deleteById(Long id);
+    Boolean deleteById(Long id);
+
 }

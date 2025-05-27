@@ -26,7 +26,10 @@ public class RegisterRequestDto {
     @Email(message = "Email should be valid")
     private String email;
 
-    @Pattern(regexp = "^\\+?94\\d{9}$", message = "Phone number must be a valid Sri Lankan number starting with country code +94")
+    @Pattern(
+            regexp = "^(\\+947\\d{8}|07\\d{8})$",
+            message = "Phone number must be valid and start with +947 or 07 followed by 8 digits"
+    )
     private String phoneNumber;
 
     @NotNull(message = "User role must be provided")

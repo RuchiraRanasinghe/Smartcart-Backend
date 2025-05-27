@@ -21,8 +21,8 @@ public class DiscountDto {
     @NotBlank(message = "Discount name is required")
     private String name;
 
-    @DecimalMin(value = "0.0", inclusive = true, message = "Percentage must be >= 0")
-    @DecimalMax(value = "100.0", inclusive = true, message = "Percentage must be <= 100")
+    @DecimalMin(value = "0.0", message = "Percentage must be >= 0")
+    @DecimalMax(value = "100.0", message = "Percentage must be <= 100")
     private double percentage;
 
     @NotNull(message = "Start date is required")

@@ -72,7 +72,7 @@ public class SaleItemServiceImpl implements SaleItemService {
     }
 
     @Override
-    public boolean deleteSaleItemById(Long id) {
+    public Boolean deleteSaleItemById(Long id) {
         SaleItem saleItem = saleItemRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(saleItemNotFoundWithId + id));
         saleItemRepository.delete(saleItem);
