@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import smartcart.org.dto.*;
+import smartcart.org.response.ApiResponse;
 import smartcart.org.service.AuthService;
 
 import java.util.List;
@@ -24,8 +25,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginRequestDto loginDto) {
-        return ResponseEntity.ok(authService.login(loginDto));
+    public ResponseEntity<ApiResponse<LoginResponseDto>> login(@Valid @RequestBody LoginRequestDto loginDto) {
+        return ResponseEntity.ok(
+                new ApiResponse<>(true,HttpStatus.OK.value(),authService.login(loginDto)));
     }
 
     @PostMapping("/forgot-password")
