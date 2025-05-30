@@ -2,9 +2,11 @@ package smartcart.org.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import smartcart.org.dto.SupplierDto;
+import smartcart.org.response.ApiResponse;
 import smartcart.org.service.SupplierService;
 
 import java.util.List;
@@ -28,8 +30,8 @@ public class SupplierController {
     }
 
     @GetMapping
-    public ResponseEntity<List<SupplierDto>> getAll() {
-        return ResponseEntity.ok(supplierService.getAllSuppliers());
+    public ResponseEntity<ApiResponse<List<SupplierDto>>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true,HttpStatus.OK.value(), supplierService.getAllSuppliers()));
     }
 
     @PutMapping("/{id}")

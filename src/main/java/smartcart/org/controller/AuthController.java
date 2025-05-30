@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import smartcart.org.dto.*;
+import smartcart.org.exception.ResourceNotFoundException;
 import smartcart.org.response.ApiResponse;
 import smartcart.org.service.AuthService;
 
@@ -26,8 +27,14 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponseDto>> login(@Valid @RequestBody LoginRequestDto loginDto) {
-        return ResponseEntity.ok(
-                new ApiResponse<>(true,HttpStatus.OK.value(),authService.login(loginDto)));
+        try {
+            return ResponseEntity.ok(
+                    new ApiResponse<>(true, HttpStatus.OK.value(), authService.login(loginDto)));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(false,HttpStatus.NOT_FOUND.value(), null,e.getMessage()));
+        }
+
+
     }
 
     @PostMapping("/forgot-password")

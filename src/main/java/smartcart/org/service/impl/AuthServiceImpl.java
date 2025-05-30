@@ -1,10 +1,12 @@
 package smartcart.org.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,10 +20,7 @@ import smartcart.org.dto.ResetPasswordRequestDto;
 import smartcart.org.dto.UserDto;
 import smartcart.org.entity.PasswordResetToken;
 import smartcart.org.entity.User;
-import smartcart.org.exception.InvalidTokenException;
-import smartcart.org.exception.ResourceNotFoundException;
-import smartcart.org.exception.UserAlreadyExistsException;
-import smartcart.org.exception.EmailSendingException;
+import smartcart.org.exception.*;
 import smartcart.org.repository.PasswordResetTokenRepository;
 import smartcart.org.repository.UserRepository;
 import smartcart.org.security.JwtTokenProvider;
@@ -29,12 +28,14 @@ import smartcart.org.service.AuthService;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
@@ -70,14 +71,18 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginResponseDto login(LoginRequestDto loginDto) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtTokenProvider.generateToken(authentication);
-        User user = userRepository.findByUsername(loginDto.getUsername())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + loginDto.getUsername()));
-        return new LoginResponseDto(token, modelMapper.map(user, UserDto.class));
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String token = jwtTokenProvider.generateToken(authentication);
+            User user = userRepository.findByUsername(loginDto.getUsername())
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + loginDto.getUsername()));
+            return new LoginResponseDto(token, modelMapper.map(user, UserDto.class));
+        } catch (BadCredentialsException e) {
+            throw new AuthenticationException("Invalid User name Or Password");
+        }
     }
 
     @Override
