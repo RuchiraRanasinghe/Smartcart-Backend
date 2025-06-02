@@ -35,12 +35,12 @@ public class SupplierController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SupplierDto> update(@PathVariable("id") Long id, @RequestBody SupplierDto dto) {
+    public ResponseEntity<ApiResponse<SupplierDto>> update(@PathVariable("id") Long id, @RequestBody SupplierDto dto) {
         if (dto.getId() != null && !dto.getId().equals(id)) {
             throw new IllegalArgumentException("Path variable ID and JSON ID must match");
         }
         dto.setId(id);
-        return ResponseEntity.ok(supplierService.updateSupplier(id, dto));
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true,HttpStatus.OK.value(),supplierService.updateSupplier(id, dto)));
     }
 
     @DeleteMapping("/{id}")
