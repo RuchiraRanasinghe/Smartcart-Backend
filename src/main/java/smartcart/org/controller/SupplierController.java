@@ -20,13 +20,13 @@ public class SupplierController {
     private final SupplierService supplierService;
 
     @PostMapping
-    public ResponseEntity<SupplierDto> create(@RequestBody SupplierDto dto) {
-        return ResponseEntity.status(201).body(supplierService.createSupplier(dto));
+    public ResponseEntity<ApiResponse<SupplierDto>> create(@RequestBody SupplierDto dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(true, HttpStatus.CREATED.value(), supplierService.createSupplier(dto)));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SupplierDto> getById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(supplierService.getSupplierById(id));
+    public ResponseEntity<ApiResponse<SupplierDto>> getById(@PathVariable("id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true, HttpStatus.OK.value(), supplierService.getSupplierById(id)));
     }
 
     @GetMapping
@@ -44,10 +44,10 @@ public class SupplierController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<ApiResponse<Object>> delete(@PathVariable("id") Long id) {
         if (Boolean.TRUE.equals(supplierService.deleteSupplier(id))){
-            return ResponseEntity.status(201).body("Supplier deleted successfully.");
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(true,HttpStatus.CREATED.value(), null,"Supplier deleted successfully"));
         }
-        return ResponseEntity.status(404).body("Supplier not found.");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(true,HttpStatus.NOT_FOUND.value(), null,"Supplier Not Found"));
     }
 }
