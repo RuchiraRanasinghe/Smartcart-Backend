@@ -25,7 +25,6 @@ public class InventoryLogDto {
     @NotBlank(message = "Reason must not be blank")
     private String reason;
 
-    @NotNull(message = "Timestamp is required")
     private LocalDateTime timestamp;
 
     private Long updatedById;
