@@ -1,10 +1,13 @@
 package smartcart.org.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 import smartcart.org.dto.SaleItemDto;
+import smartcart.org.response.ApiResponse;
 import smartcart.org.service.SaleItemService;
 
 import java.util.List;
@@ -17,34 +20,34 @@ public class SaleItemController {
     private final SaleItemService saleItemService;
 
     @PostMapping
-    public ResponseEntity<SaleItemDto> createSaleItem(@NonNull @RequestBody SaleItemDto saleItemDto) {
+    public ResponseEntity<ApiResponse<SaleItemDto>> createSaleItem(@NonNull @Valid @RequestBody SaleItemDto saleItemDto) {
         SaleItemDto createdSaleItem = saleItemService.createSaleItem(saleItemDto);
-        return ResponseEntity.status(201).body(createdSaleItem);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(true, HttpStatus.CREATED.value(), createdSaleItem));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SaleItemDto> getSaleItemById(@NonNull @PathVariable("id") Long id) {
+    public ResponseEntity<ApiResponse<SaleItemDto>> getSaleItemById(@NonNull @PathVariable("id") Long id) {
         SaleItemDto saleItem = saleItemService.findSaleItemById(id);
-        return ResponseEntity.ok(saleItem);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true, HttpStatus.OK.value(), saleItem));
     }
 
     @GetMapping
-    public ResponseEntity<List<SaleItemDto>> getAllSaleItems() {
+    public ResponseEntity<ApiResponse<List<SaleItemDto>>> getAllSaleItems() {
         List<SaleItemDto> saleItems = saleItemService.findAllSaleItems();
-        return ResponseEntity.ok(saleItems);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true, HttpStatus.OK.value(), saleItems));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SaleItemDto> updateSaleItem(@NonNull @PathVariable("id") Long id, @NonNull @RequestBody SaleItemDto saleItemDto) {
+    public ResponseEntity<ApiResponse<SaleItemDto>> updateSaleItem(@NonNull @PathVariable("id") Long id, @NonNull @Valid @RequestBody SaleItemDto saleItemDto) {
         SaleItemDto updatedSaleItem = saleItemService.updateSaleItem(id, saleItemDto);
-        return ResponseEntity.ok(updatedSaleItem);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true, HttpStatus.OK.value(), updatedSaleItem));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteSaleItemById(@NonNull @PathVariable("id") Long id) {
-        if (saleItemService.deleteSaleItemById(id)){
-            return ResponseEntity.status(201).body("Sale item deleted Successfully");
+    public ResponseEntity<ApiResponse<Object>> deleteSaleItemById(@NonNull @PathVariable("id") Long id) {
+        if (Boolean.TRUE.equals(saleItemService.deleteSaleItemById(id))){
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(true,HttpStatus.CREATED.value(), null,"Sale Item deleted successfully"));
         }
-        return ResponseEntity.status(404).body("Sale item not found.");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(true,HttpStatus.NOT_FOUND.value(), null,"Sale Item Not Found"));
     }
 }

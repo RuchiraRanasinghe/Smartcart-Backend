@@ -22,6 +22,7 @@ public class ProductDto {
     @NotBlank(message = "Barcode is mandatory")
     private String barcode;
 
+    @NotBlank(message = "Category Cannot Be Empty")
     private String category;
 
     @Min(value = 0, message = "Quantity cannot be negative")
@@ -33,7 +34,7 @@ public class ProductDto {
     @Positive(message = "Selling price must be positive")
     private double sellingPrice;
 
-    @PastOrPresent(message = "Expiry date cannot be in the future")
+    @FutureOrPresent(message = "Expire Date Must be a Future")
     private Date expiryDate;
 
     @NotNull(message = "Supplier Id is required")

@@ -21,8 +21,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> register(@Valid @RequestBody RegisterRequestDto registerDto) {
-        return new ResponseEntity<>(authService.create(registerDto), HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse<UserDto>> register(@Valid @RequestBody RegisterRequestDto registerDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true,HttpStatus.OK.value(), authService.create(registerDto)));
     }
 
     @PostMapping("/login")
@@ -38,38 +38,38 @@ public class AuthController {
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<String> forgotPassword(@Valid @RequestBody ForgotPasswordRequestDto forgotPasswordRequestDto) {
+    public ResponseEntity<ApiResponse<Object>> forgotPassword(@Valid @RequestBody ForgotPasswordRequestDto forgotPasswordRequestDto) {
         authService.forgotPassword(forgotPasswordRequestDto);
-        return ResponseEntity.ok("OTP sent to your email");
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true,HttpStatus.OK.value(), null,"OTP sent to your email"));
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<String> resetPassword(@Valid @RequestBody ResetPasswordRequestDto resetPasswordRequestDto) {
+    public ResponseEntity<ApiResponse<Object>> resetPassword(@Valid @RequestBody ResetPasswordRequestDto resetPasswordRequestDto) {
         authService.resetPassword(resetPasswordRequestDto);
-        return ResponseEntity.ok("Password reset successfully");
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true,HttpStatus.OK.value(), null,"Password Reset Successfully."));
     }
 
     @GetMapping("/users")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<UserDto>> getAllUsers() {
-        return ResponseEntity.ok(authService.findAll());
+    public ResponseEntity<ApiResponse<List<UserDto>>> getAllUsers() {
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true,HttpStatus.OK.value(), authService.findAll()));
     }
 
     @GetMapping("/users/{id}")
     @PreAuthorize("hasRole('ADMIN') or authentication.principal.id == #id")
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
-        return ResponseEntity.ok(authService.findById(id));
+    public ResponseEntity<ApiResponse<UserDto>> getUserById(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true,HttpStatus.OK.value(), authService.findById(id)));
     }
 
     @PutMapping("/users/{id}")
     @PreAuthorize("hasRole('ADMIN') or authentication.principal.id == #id")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @Valid @RequestBody UserDto userDto) {
-        return ResponseEntity.ok(authService.update(id, userDto));
+    public ResponseEntity<ApiResponse<UserDto>> updateUser(@PathVariable Long id, @Valid @RequestBody UserDto userDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true,HttpStatus.OK.value(), authService.update(id, userDto)));
     }
 
     @DeleteMapping("/users/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Boolean> deleteUser(@PathVariable Long id) {
-        return ResponseEntity.ok(authService.deleteById(id));
+    public ResponseEntity<ApiResponse<Boolean>> deleteUser(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(true,HttpStatus.OK.value(), authService.deleteById(id)));
     }
 }
